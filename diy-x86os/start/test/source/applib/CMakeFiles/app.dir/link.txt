@@ -1,0 +1,2 @@
+/usr/bin/x86_64-linux-gnu-ar qc libapp.a CMakeFiles/app.dir/crt0.S.obj CMakeFiles/app.dir/cstart.c.obj CMakeFiles/app.dir/lib_syscall.c.obj
+/usr/bin/x86_64-linux-gnu-ranlib libapp.a

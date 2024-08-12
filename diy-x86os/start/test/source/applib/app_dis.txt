@@ -1,0 +1,623 @@
+In archive /home/jerry/Desktop/diy-x86os/diy-x86os/start/start/source/applib/libapp.a:
+
+crt0.S.obj:     file format elf32-i386
+rw-r--r-- 0/0   1628 Jan  1 08:00 1970 crt0.S.obj
+architecture: i386, flags 0x00000011:
+HAS_RELOC, HAS_SYMS
+start address 0x00000000
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000010  00000000  00000000  00000034  2**0
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  1 .data         00000000  00000000  00000000  00000044  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000000  00000000  00000000  00000044  2**0
+                  ALLOC
+  3 .debug_line   0000004e  00000000  00000000  00000044  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+  4 .debug_line_str 00000092  00000000  00000000  00000092  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  5 .debug_info   00000024  00000000  00000000  00000124  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+  6 .debug_abbrev 00000014  00000000  00000000  00000148  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  7 .debug_aranges 00000020  00000000  00000000  00000160  2**3
+                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+  8 .debug_str    00000097  00000000  00000000  00000180  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+SYMBOL TABLE:
+00000000 l    d  .text	00000000 .text
+00000000 l    d  .debug_info	00000000 .debug_info
+00000000 l    d  .debug_abbrev	00000000 .debug_abbrev
+00000000 l    d  .debug_line	00000000 .debug_line
+00000000 l    d  .debug_line_str	00000000 .debug_line_str
+00000000 l    d  .debug_str	00000000 .debug_str
+00000000 g       .text	00000000 _start
+00000000         *UND*	00000000 cstart
+
+
+
+Disassembly of section .text:
+
+00000000 <_start>:
+    .global _start
+    .extern cstart
+_start:
+    # 设置各数据段的选择子,由于应用任务都是用tss恢复的，所以
+    # 实际不必设置，但为安全起见，还是设置一下
+    mov %ss, %ax
+   0:	66 8c d0             	mov    %ss,%ax
+    mov %ax, %ds
+   3:	8e d8                	mov    %eax,%ds
+    mov %ax, %es
+   5:	8e c0                	mov    %eax,%es
+    mov %ax, %fs
+   7:	8e e0                	mov    %eax,%fs
+    mov %ax, %gs
+   9:	8e e8                	mov    %eax,%gs
+
+    # 进入主函数执行，注意此时栈没有变，参数仍然在其中
+    # 所以调用cstart时，仍然可以看到参数
+    jmp cstart
+   b:	e9 fc ff ff ff       	jmp    c <_start+0xc>
+			c: R_386_PC32	cstart
+
+cstart.c.obj:     file format elf32-i386
+rw-r--r-- 0/0   3328 Jan  1 08:00 1970 cstart.c.obj
+architecture: i386, flags 0x00000011:
+HAS_RELOC, HAS_SYMS
+start address 0x00000000
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000038  00000000  00000000  00000034  2**0
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, CODE
+  1 .data         00000000  00000000  00000000  0000006c  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000000  00000000  00000000  0000006c  2**0
+                  ALLOC
+  3 .debug_info   00000123  00000000  00000000  0000006c  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+  4 .debug_abbrev 000000c3  00000000  00000000  0000018f  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  5 .debug_aranges 00000020  00000000  00000000  00000252  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+  6 .debug_line   00000071  00000000  00000000  00000272  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+  7 .debug_str    00000174  00000000  00000000  000002e3  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  8 .debug_line_str 000001e8  00000000  00000000  00000457  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  9 .comment      0000002c  00000000  00000000  0000063f  2**0
+                  CONTENTS, READONLY
+ 10 .note.GNU-stack 00000000  00000000  00000000  0000066b  2**0
+                  CONTENTS, READONLY
+ 11 .debug_frame  00000034  00000000  00000000  0000066c  2**2
+                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+SYMBOL TABLE:
+00000000 l    df *ABS*	00000000 cstart.c
+00000000 l    d  .text	00000000 .text
+00000000 l    d  .debug_info	00000000 .debug_info
+00000000 l    d  .debug_abbrev	00000000 .debug_abbrev
+00000000 l    d  .debug_line	00000000 .debug_line
+00000000 l    d  .debug_str	00000000 .debug_str
+00000000 l    d  .debug_line_str	00000000 .debug_line_str
+00000000 l    d  .debug_frame	00000000 .debug_frame
+00000000 g     F .text	00000038 cstart
+00000000         *UND*	00000000 __bss_start__
+00000000         *UND*	00000000 __bss_end__
+00000000         *UND*	00000000 main
+
+
+
+Disassembly of section .text:
+
+00000000 <cstart>:
+extern uint8_t __bss_start__[], __bss_end__[];
+
+/**
+ * @brief 应用的初始化，C部分
+ */
+void cstart (int argc, char ** argv) {
+   0:	55                   	push   %ebp
+   1:	89 e5                	mov    %esp,%ebp
+   3:	83 ec 18             	sub    $0x18,%esp
+    // 清空bss区，注意这是必须的！！！
+    // 像newlib库中有些代码就依赖于此，未清空时数据未知，导致调用sbrk时申请很大内存空间
+    uint8_t * start = __bss_start__;
+   6:	c7 45 f4 00 00 00 00 	movl   $0x0,-0xc(%ebp)
+			9: R_386_32	__bss_start__
+    while (start < __bss_end__) {
+   d:	eb 0c                	jmp    1b <cstart+0x1b>
+        *start++ = 0;
+   f:	8b 45 f4             	mov    -0xc(%ebp),%eax
+  12:	8d 50 01             	lea    0x1(%eax),%edx
+  15:	89 55 f4             	mov    %edx,-0xc(%ebp)
+  18:	c6 00 00             	movb   $0x0,(%eax)
+    while (start < __bss_end__) {
+  1b:	81 7d f4 00 00 00 00 	cmpl   $0x0,-0xc(%ebp)
+			1e: R_386_32	__bss_end__
+  22:	72 eb                	jb     f <cstart+0xf>
+    }
+
+    main(argc, argv);
+  24:	83 ec 08             	sub    $0x8,%esp
+  27:	ff 75 0c             	push   0xc(%ebp)
+  2a:	ff 75 08             	push   0x8(%ebp)
+  2d:	e8 fc ff ff ff       	call   2e <cstart+0x2e>
+			2e: R_386_PC32	main
+  32:	83 c4 10             	add    $0x10,%esp
+  35:	90                   	nop
+  36:	c9                   	leave  
+  37:	c3                   	ret    
+
+lib_syscall.c.obj:     file format elf32-i386
+rw-r--r-- 0/0   8184 Jan  1 08:00 1970 lib_syscall.c.obj
+architecture: i386, flags 0x00000011:
+HAS_RELOC, HAS_SYMS
+start address 0x00000000
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000278  00000000  00000000  00000034  2**0
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .data         00000000  00000000  00000000  000002ac  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  2 .bss          00000000  00000000  00000000  000002ac  2**0
+                  ALLOC
+  3 .debug_info   00000709  00000000  00000000  000002ac  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+  4 .debug_abbrev 00000139  00000000  00000000  000009b5  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  5 .debug_aranges 00000020  00000000  00000000  00000aee  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+  6 .debug_line   000001ad  00000000  00000000  00000b0e  2**0
+                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+  7 .debug_str    00000343  00000000  00000000  00000cbb  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  8 .debug_line_str 0000025c  00000000  00000000  00000ffe  2**0
+                  CONTENTS, READONLY, DEBUGGING, OCTETS
+  9 .comment      0000002c  00000000  00000000  0000125a  2**0
+                  CONTENTS, READONLY
+ 10 .note.GNU-stack 00000000  00000000  00000000  00001286  2**0
+                  CONTENTS, READONLY
+ 11 .debug_frame  00000220  00000000  00000000  00001288  2**2
+                  CONTENTS, RELOC, READONLY, DEBUGGING, OCTETS
+SYMBOL TABLE:
+00000000 l    df *ABS*	00000000 lib_syscall.c
+00000000 l    d  .text	00000000 .text
+00000000 l     F .text	0000004c sys_call
+00000000 l    d  .debug_info	00000000 .debug_info
+00000000 l    d  .debug_abbrev	00000000 .debug_abbrev
+00000000 l    d  .debug_line	00000000 .debug_line
+00000000 l    d  .debug_str	00000000 .debug_str
+00000000 l    d  .debug_line_str	00000000 .debug_line_str
+00000000 l    d  .debug_frame	00000000 .debug_frame
+0000004c g     F .text	0000002e msleep
+0000007a g     F .text	0000001b getpid
+00000095 g     F .text	00000027 print_msg
+000000bc g     F .text	0000001b fork
+000000d7 g     F .text	0000002d execve
+00000104 g     F .text	0000001b yield
+0000011f g     F .text	00000027 open
+00000146 g     F .text	0000002d read
+00000173 g     F .text	0000002d write
+000001a0 g     F .text	00000021 close
+000001c1 g     F .text	0000002d lseek
+000001ee g     F .text	00000027 fstat
+00000215 g     F .text	00000021 isatty
+00000236 g     F .text	00000021 sbrk
+00000257 g     F .text	00000021 dup
+
+
+
+Disassembly of section .text:
+
+00000000 <sys_call>:
+#include "lib_syscall.h"
+
+/**
+ * 执行系统调用
+ */
+static inline int sys_call (syscall_args_t * args) {
+   0:	55                   	push   %ebp
+   1:	89 e5                	mov    %esp,%ebp
+   3:	57                   	push   %edi
+   4:	56                   	push   %esi
+   5:	53                   	push   %ebx
+   6:	83 ec 10             	sub    $0x10,%esp
+    // 使用特权级0,其实比3高即可，偏移量不需要，填0即可。类似于far_jump函数的实现
+    //为什么跳到start.S里面运行，是因为在cpu.c里面初始化设置了这个调用门
+	const unsigned long sys_gate_addr[] = {0, SELECTOR_SYSCALL | 0};
+   9:	c7 45 e8 00 00 00 00 	movl   $0x0,-0x18(%ebp)
+  10:	c7 45 ec 18 00 00 00 	movl   $0x18,-0x14(%ebp)
+            "push %[arg1]\n\t"
+            "push %[arg0]\n\t"
+            "push %[id]\n\t"
+            "lcalll *(%[gate])\n\n"
+    		:"=a"(ret)
+            :[arg3]"r"(args->arg3), [arg2]"r"(args->arg2), [arg1]"r"(args->arg1),
+  17:	8b 45 08             	mov    0x8(%ebp),%eax
+  1a:	8b 40 10             	mov    0x10(%eax),%eax
+  1d:	8b 55 08             	mov    0x8(%ebp),%edx
+  20:	8b 52 0c             	mov    0xc(%edx),%edx
+  23:	8b 4d 08             	mov    0x8(%ebp),%ecx
+  26:	8b 49 08             	mov    0x8(%ecx),%ecx
+            [arg0]"r"(args->arg0), [id]"r"(args->id),
+  29:	8b 5d 08             	mov    0x8(%ebp),%ebx
+  2c:	8b 5b 04             	mov    0x4(%ebx),%ebx
+  2f:	8b 75 08             	mov    0x8(%ebp),%esi
+  32:	8b 36                	mov    (%esi),%esi
+    __asm__ __volatile__(
+  34:	8d 7d e8             	lea    -0x18(%ebp),%edi
+  37:	50                   	push   %eax
+  38:	52                   	push   %edx
+  39:	51                   	push   %ecx
+  3a:	53                   	push   %ebx
+  3b:	56                   	push   %esi
+  3c:	ff 1f                	lcall  *(%edi)
+  3e:	89 45 f0             	mov    %eax,-0x10(%ebp)
+            [gate]"r"(sys_gate_addr));
+    return ret;
+  41:	8b 45 f0             	mov    -0x10(%ebp),%eax
+}
+  44:	83 c4 10             	add    $0x10,%esp
+  47:	5b                   	pop    %ebx
+  48:	5e                   	pop    %esi
+  49:	5f                   	pop    %edi
+  4a:	5d                   	pop    %ebp
+  4b:	c3                   	ret    
+
+0000004c <msleep>:
+
+int msleep (int ms) {
+  4c:	55                   	push   %ebp
+  4d:	89 e5                	mov    %esp,%ebp
+  4f:	83 ec 20             	sub    $0x20,%esp
+    if (ms <= 0) {
+  52:	83 7d 08 00          	cmpl   $0x0,0x8(%ebp)
+  56:	7f 07                	jg     5f <msleep+0x13>
+        return 0;
+  58:	b8 00 00 00 00       	mov    $0x0,%eax
+  5d:	eb 19                	jmp    78 <msleep+0x2c>
+    }
+
+    syscall_args_t args;
+    args.id = SYS_msleep;
+  5f:	c7 45 ec 00 00 00 00 	movl   $0x0,-0x14(%ebp)
+    args.arg0 = ms;
+  66:	8b 45 08             	mov    0x8(%ebp),%eax
+  69:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    return sys_call(&args);
+  6c:	8d 45 ec             	lea    -0x14(%ebp),%eax
+  6f:	50                   	push   %eax
+  70:	e8 8b ff ff ff       	call   0 <sys_call>
+  75:	83 c4 04             	add    $0x4,%esp
+}
+  78:	c9                   	leave  
+  79:	c3                   	ret    
+
+0000007a <getpid>:
+
+int getpid() {
+  7a:	55                   	push   %ebp
+  7b:	89 e5                	mov    %esp,%ebp
+  7d:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_getpid;
+  80:	c7 45 ec 01 00 00 00 	movl   $0x1,-0x14(%ebp)
+    return sys_call(&args);
+  87:	8d 45 ec             	lea    -0x14(%ebp),%eax
+  8a:	50                   	push   %eax
+  8b:	e8 70 ff ff ff       	call   0 <sys_call>
+  90:	83 c4 04             	add    $0x4,%esp
+}
+  93:	c9                   	leave  
+  94:	c3                   	ret    
+
+00000095 <print_msg>:
+
+int print_msg(char * fmt, int arg) {
+  95:	55                   	push   %ebp
+  96:	89 e5                	mov    %esp,%ebp
+  98:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_printmsg;
+  9b:	c7 45 ec 64 00 00 00 	movl   $0x64,-0x14(%ebp)
+    args.arg0 = (int)fmt;
+  a2:	8b 45 08             	mov    0x8(%ebp),%eax
+  a5:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    args.arg1 = arg;
+  a8:	8b 45 0c             	mov    0xc(%ebp),%eax
+  ab:	89 45 f4             	mov    %eax,-0xc(%ebp)
+    return sys_call(&args);
+  ae:	8d 45 ec             	lea    -0x14(%ebp),%eax
+  b1:	50                   	push   %eax
+  b2:	e8 49 ff ff ff       	call   0 <sys_call>
+  b7:	83 c4 04             	add    $0x4,%esp
+}
+  ba:	c9                   	leave  
+  bb:	c3                   	ret    
+
+000000bc <fork>:
+
+int fork() {
+  bc:	55                   	push   %ebp
+  bd:	89 e5                	mov    %esp,%ebp
+  bf:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_fork;
+  c2:	c7 45 ec 02 00 00 00 	movl   $0x2,-0x14(%ebp)
+    return sys_call(&args);
+  c9:	8d 45 ec             	lea    -0x14(%ebp),%eax
+  cc:	50                   	push   %eax
+  cd:	e8 2e ff ff ff       	call   0 <sys_call>
+  d2:	83 c4 04             	add    $0x4,%esp
+}
+  d5:	c9                   	leave  
+  d6:	c3                   	ret    
+
+000000d7 <execve>:
+
+int execve(const char *name, char * const *argv, char * const *env) {
+  d7:	55                   	push   %ebp
+  d8:	89 e5                	mov    %esp,%ebp
+  da:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_execve;
+  dd:	c7 45 ec 03 00 00 00 	movl   $0x3,-0x14(%ebp)
+    args.arg0 = (int)name;
+  e4:	8b 45 08             	mov    0x8(%ebp),%eax
+  e7:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    args.arg1 = (int)argv;
+  ea:	8b 45 0c             	mov    0xc(%ebp),%eax
+  ed:	89 45 f4             	mov    %eax,-0xc(%ebp)
+    args.arg2 = (int)env;
+  f0:	8b 45 10             	mov    0x10(%ebp),%eax
+  f3:	89 45 f8             	mov    %eax,-0x8(%ebp)
+    return sys_call(&args);
+  f6:	8d 45 ec             	lea    -0x14(%ebp),%eax
+  f9:	50                   	push   %eax
+  fa:	e8 01 ff ff ff       	call   0 <sys_call>
+  ff:	83 c4 04             	add    $0x4,%esp
+}
+ 102:	c9                   	leave  
+ 103:	c3                   	ret    
+
+00000104 <yield>:
+
+int yield (void) {
+ 104:	55                   	push   %ebp
+ 105:	89 e5                	mov    %esp,%ebp
+ 107:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_yield;
+ 10a:	c7 45 ec 04 00 00 00 	movl   $0x4,-0x14(%ebp)
+    return sys_call(&args);
+ 111:	8d 45 ec             	lea    -0x14(%ebp),%eax
+ 114:	50                   	push   %eax
+ 115:	e8 e6 fe ff ff       	call   0 <sys_call>
+ 11a:	83 c4 04             	add    $0x4,%esp
+}
+ 11d:	c9                   	leave  
+ 11e:	c3                   	ret    
+
+0000011f <open>:
+
+int open(const char *name, int flags, ...) {
+ 11f:	55                   	push   %ebp
+ 120:	89 e5                	mov    %esp,%ebp
+ 122:	83 ec 20             	sub    $0x20,%esp
+    // 不考虑支持太多参数
+    syscall_args_t args;
+    args.id = SYS_open;
+ 125:	c7 45 ec 32 00 00 00 	movl   $0x32,-0x14(%ebp)
+    args.arg0 = (int)name;
+ 12c:	8b 45 08             	mov    0x8(%ebp),%eax
+ 12f:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    args.arg1 = (int)flags;
+ 132:	8b 45 0c             	mov    0xc(%ebp),%eax
+ 135:	89 45 f4             	mov    %eax,-0xc(%ebp)
+    return sys_call(&args);
+ 138:	8d 45 ec             	lea    -0x14(%ebp),%eax
+ 13b:	50                   	push   %eax
+ 13c:	e8 bf fe ff ff       	call   0 <sys_call>
+ 141:	83 c4 04             	add    $0x4,%esp
+}
+ 144:	c9                   	leave  
+ 145:	c3                   	ret    
+
+00000146 <read>:
+
+int read(int file, char *ptr, int len) {
+ 146:	55                   	push   %ebp
+ 147:	89 e5                	mov    %esp,%ebp
+ 149:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_read;
+ 14c:	c7 45 ec 33 00 00 00 	movl   $0x33,-0x14(%ebp)
+    args.arg0 = (int)file;
+ 153:	8b 45 08             	mov    0x8(%ebp),%eax
+ 156:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    args.arg1 = (int)ptr;
+ 159:	8b 45 0c             	mov    0xc(%ebp),%eax
+ 15c:	89 45 f4             	mov    %eax,-0xc(%ebp)
+    args.arg2 = len;
+ 15f:	8b 45 10             	mov    0x10(%ebp),%eax
+ 162:	89 45 f8             	mov    %eax,-0x8(%ebp)
+    return sys_call(&args);
+ 165:	8d 45 ec             	lea    -0x14(%ebp),%eax
+ 168:	50                   	push   %eax
+ 169:	e8 92 fe ff ff       	call   0 <sys_call>
+ 16e:	83 c4 04             	add    $0x4,%esp
+}
+ 171:	c9                   	leave  
+ 172:	c3                   	ret    
+
+00000173 <write>:
+
+int write(int file, char *ptr, int len) {
+ 173:	55                   	push   %ebp
+ 174:	89 e5                	mov    %esp,%ebp
+ 176:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_write;
+ 179:	c7 45 ec 34 00 00 00 	movl   $0x34,-0x14(%ebp)
+    args.arg0 = (int)file;
+ 180:	8b 45 08             	mov    0x8(%ebp),%eax
+ 183:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    args.arg1 = (int)ptr;
+ 186:	8b 45 0c             	mov    0xc(%ebp),%eax
+ 189:	89 45 f4             	mov    %eax,-0xc(%ebp)
+    args.arg2 = len;
+ 18c:	8b 45 10             	mov    0x10(%ebp),%eax
+ 18f:	89 45 f8             	mov    %eax,-0x8(%ebp)
+    return sys_call(&args);
+ 192:	8d 45 ec             	lea    -0x14(%ebp),%eax
+ 195:	50                   	push   %eax
+ 196:	e8 65 fe ff ff       	call   0 <sys_call>
+ 19b:	83 c4 04             	add    $0x4,%esp
+}
+ 19e:	c9                   	leave  
+ 19f:	c3                   	ret    
+
+000001a0 <close>:
+
+int close(int file) {
+ 1a0:	55                   	push   %ebp
+ 1a1:	89 e5                	mov    %esp,%ebp
+ 1a3:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_close;
+ 1a6:	c7 45 ec 35 00 00 00 	movl   $0x35,-0x14(%ebp)
+    args.arg0 = (int)file;
+ 1ad:	8b 45 08             	mov    0x8(%ebp),%eax
+ 1b0:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    return sys_call(&args);
+ 1b3:	8d 45 ec             	lea    -0x14(%ebp),%eax
+ 1b6:	50                   	push   %eax
+ 1b7:	e8 44 fe ff ff       	call   0 <sys_call>
+ 1bc:	83 c4 04             	add    $0x4,%esp
+}
+ 1bf:	c9                   	leave  
+ 1c0:	c3                   	ret    
+
+000001c1 <lseek>:
+
+int lseek(int file, int ptr, int dir) {
+ 1c1:	55                   	push   %ebp
+ 1c2:	89 e5                	mov    %esp,%ebp
+ 1c4:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_lseek;
+ 1c7:	c7 45 ec 36 00 00 00 	movl   $0x36,-0x14(%ebp)
+    args.arg0 = (int)file;
+ 1ce:	8b 45 08             	mov    0x8(%ebp),%eax
+ 1d1:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    args.arg1 = (int)ptr;
+ 1d4:	8b 45 0c             	mov    0xc(%ebp),%eax
+ 1d7:	89 45 f4             	mov    %eax,-0xc(%ebp)
+    args.arg2 = dir;
+ 1da:	8b 45 10             	mov    0x10(%ebp),%eax
+ 1dd:	89 45 f8             	mov    %eax,-0x8(%ebp)
+    return sys_call(&args);
+ 1e0:	8d 45 ec             	lea    -0x14(%ebp),%eax
+ 1e3:	50                   	push   %eax
+ 1e4:	e8 17 fe ff ff       	call   0 <sys_call>
+ 1e9:	83 c4 04             	add    $0x4,%esp
+}
+ 1ec:	c9                   	leave  
+ 1ed:	c3                   	ret    
+
+000001ee <fstat>:
+
+/**
+ * 获取文件的状态
+ */
+int fstat(int file, struct stat *st) {
+ 1ee:	55                   	push   %ebp
+ 1ef:	89 e5                	mov    %esp,%ebp
+ 1f1:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_fstat;
+ 1f4:	c7 45 ec 39 00 00 00 	movl   $0x39,-0x14(%ebp)
+    args.arg0 = (int)file;
+ 1fb:	8b 45 08             	mov    0x8(%ebp),%eax
+ 1fe:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    args.arg1 = (int)st;
+ 201:	8b 45 0c             	mov    0xc(%ebp),%eax
+ 204:	89 45 f4             	mov    %eax,-0xc(%ebp)
+    return sys_call(&args);
+ 207:	8d 45 ec             	lea    -0x14(%ebp),%eax
+ 20a:	50                   	push   %eax
+ 20b:	e8 f0 fd ff ff       	call   0 <sys_call>
+ 210:	83 c4 04             	add    $0x4,%esp
+}
+ 213:	c9                   	leave  
+ 214:	c3                   	ret    
+
+00000215 <isatty>:
+
+/**
+ * 判断文件描述符与tty关联
+ */
+int isatty(int file) {
+ 215:	55                   	push   %ebp
+ 216:	89 e5                	mov    %esp,%ebp
+ 218:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_isatty;
+ 21b:	c7 45 ec 37 00 00 00 	movl   $0x37,-0x14(%ebp)
+    args.arg0 = (int)file;
+ 222:	8b 45 08             	mov    0x8(%ebp),%eax
+ 225:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    return sys_call(&args);
+ 228:	8d 45 ec             	lea    -0x14(%ebp),%eax
+ 22b:	50                   	push   %eax
+ 22c:	e8 cf fd ff ff       	call   0 <sys_call>
+ 231:	83 c4 04             	add    $0x4,%esp
+}
+ 234:	c9                   	leave  
+ 235:	c3                   	ret    
+
+00000236 <sbrk>:
+
+void * sbrk(ptrdiff_t incr) {
+ 236:	55                   	push   %ebp
+ 237:	89 e5                	mov    %esp,%ebp
+ 239:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_sbrk;
+ 23c:	c7 45 ec 38 00 00 00 	movl   $0x38,-0x14(%ebp)
+    args.arg0 = (int)incr;
+ 243:	8b 45 08             	mov    0x8(%ebp),%eax
+ 246:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    return (void *)sys_call(&args);
+ 249:	8d 45 ec             	lea    -0x14(%ebp),%eax
+ 24c:	50                   	push   %eax
+ 24d:	e8 ae fd ff ff       	call   0 <sys_call>
+ 252:	83 c4 04             	add    $0x4,%esp
+}
+ 255:	c9                   	leave  
+ 256:	c3                   	ret    
+
+00000257 <dup>:
+
+int dup(int file){
+ 257:	55                   	push   %ebp
+ 258:	89 e5                	mov    %esp,%ebp
+ 25a:	83 ec 20             	sub    $0x20,%esp
+    syscall_args_t args;
+    args.id = SYS_dup;
+ 25d:	c7 45 ec 3a 00 00 00 	movl   $0x3a,-0x14(%ebp)
+    args.arg0 = (int)file;
+ 264:	8b 45 08             	mov    0x8(%ebp),%eax
+ 267:	89 45 f0             	mov    %eax,-0x10(%ebp)
+    return sys_call(&args);
+ 26a:	8d 45 ec             	lea    -0x14(%ebp),%eax
+ 26d:	50                   	push   %eax
+ 26e:	e8 8d fd ff ff       	call   0 <sys_call>
+ 273:	83 c4 04             	add    $0x4,%esp
+ 276:	c9                   	leave  
+ 277:	c3                   	ret    
